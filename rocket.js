@@ -72,13 +72,10 @@ function ground() {
   pop();
 }
 
-// function keyPressed(){
-//   if (keyCode===(blankspace)){
+//when it starts
 let isGameActive = true;
-// }
-// }
 
-// The following 29 lines of code was added by courtesy of Garrit Schaap
+// The following 24 lines of code was added by courtesy of Garrit Schaap
 let starX = [];
 let starY = [];
 let starAlpha = [];
@@ -93,44 +90,59 @@ for (let i = 0; i < 200; i++) {
   starAlpha.push(alpha);
 }
 
+//location of rocket
 let rocketY = 80;
-//火箭的高低
+
+//the fuel
 let fuel = 200;
-//燃料
+
+//the gravity, the speed for falling
 let gravity = 6;
-//重力
+
+//the power slow the falling speed
 let antigravity = 5;
-//反重力
+
+//text when lose game
 let loseGame = "You lose";
 
+//text when win the game
 let winGame = "You Win";
 
-let crash = "You crashed";
-
+//when the game start
 let start;
 
+//how much left
 let restFuel = "Rest fuel:";
 
+//the name
 let nameOfGame = "Lunar Lander";
 
-let introduction = "Press Uparrow to strat";
+//before start
+let introduction = "Press Spase to strat\nand use uparrow to\npreventing crash";
 
+//after start
 function gameStart() {
+  //start performing immediately
   if (isGameActive) {
+    //let text disappaer
     nameOfGame = " ";
     introduction = " ";
+    //start fall, change the location
     rocketY = rocketY + gravity;
+    //when up is pressed
     if (keyIsDown(38)) {
-      textSize(20);
-      text("key working", 20, 250);
+      //slow down
       rocketY = rocketY - antigravity;
-      // gravity = 1;
+      //fuel reduction
       fuel = fuel - 2;
     }
+    //when it get to the grund
     if (rocketY > 644.5) {
       rocketY = 644.5;
       isGameActive = false;
+      gravity = 0;
     }
+    //run out of the fuel
     if (fuel <= 0) {
       fuel = 0;
       antigravity = 0;
@@ -141,6 +153,7 @@ function gameStart() {
   }
 }
 
+//after out of fuel
 function landing() {
   rocketY = rocketY + gravity;
   if (rocketY > 644.5) {
@@ -150,6 +163,7 @@ function landing() {
 }
 
 function draw() {
+  //the background
   createCanvas(500, 800);
   background(0, 0, 0);
 
@@ -159,9 +173,11 @@ function draw() {
     starAlpha[index] = starAlpha[index] + 0.02;
   }
 
+  //draw the picture
   rocket(245, rocketY);
   ground();
 
+  //useful text
   textSize(20);
   text(restFuel + fuel, 2, 25);
 
@@ -172,25 +188,25 @@ function draw() {
   textSize(30);
   text(introduction, 120, 500);
 
+  //klick space for start
   if (keyIsDown(32)) {
     start = true;
   }
 
+  //after start the other function start to action too
   if (start === true) {
     gameStart();
   }
 
+  //these are all for the final determination
   if (isGameActive === false) {
     if (rocketY < 644.5) {
       landing();
     }
-    if (gravity === 1 && rocketY === 644.5) {
+    if (gravity === 0 && rocketY === 644.5) {
       textSize(40);
       text(winGame, 150, 400);
     } else if (gravity > 1 && rocketY === 644.5) {
-      textSize(40);
-      text(crash, 150, 400);
-    } else {
       textSize(40);
       text(loseGame, 150, 400);
     }
