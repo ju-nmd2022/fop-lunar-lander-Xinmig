@@ -117,6 +117,9 @@ let restFuel = "Rest fuel:";
 //the name
 let nameOfGame = "Lunar Lander";
 
+//test speed for fall
+let speed;
+
 //before start
 let introduction = "Press Spase to strat\nand use uparrow to\npreventing crash";
 
@@ -133,6 +136,8 @@ function gameStart() {
     if (keyIsDown(38)) {
       //slow down
       rocketY = rocketY - antigravity;
+      speed = gravity - antigravity;
+
       //fuel reduction
       fuel = fuel - 2;
     }
@@ -140,7 +145,6 @@ function gameStart() {
     if (rocketY > 644.5) {
       rocketY = 644.5;
       isGameActive = false;
-      gravity = 0;
     }
     //run out of the fuel
     if (fuel <= 0) {
@@ -149,6 +153,7 @@ function gameStart() {
       rocketY = rocketY + gravity;
       isGameActive = false;
       gravity = 6;
+      speed = gravity;
     }
   }
 }
@@ -156,6 +161,7 @@ function gameStart() {
 //after out of fuel
 function landing() {
   rocketY = rocketY + gravity;
+  gravity = 6;
   if (rocketY > 644.5) {
     rocketY = 644.5;
     isGameActive = false;
@@ -203,10 +209,10 @@ function draw() {
     if (rocketY < 644.5) {
       landing();
     }
-    if (gravity === 0 && rocketY === 644.5) {
+    if (speed === 1 && fuel > 0) {
       textSize(40);
       text(winGame, 150, 400);
-    } else if (gravity > 1 && rocketY === 644.5) {
+    } else if (gravity > 4) {
       textSize(40);
       text(loseGame, 150, 400);
     }
